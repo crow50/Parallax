@@ -1,0 +1,21 @@
+services:
+
+#  parallax:
+#    build:
+#      context: ./app
+#    restart: unless-stopped
+
+    
+  db:
+    image: postgres
+    restart: always
+    # set shared memory limit when using docker compose
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: example
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
