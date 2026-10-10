@@ -18,7 +18,7 @@ services:
       start_period: 15s
 
   n8n:
-    image: n8nio/n8n:stable
+    image: ghcr.io/n8n-io/n8n:stable
     restart: unless-stopped
     ports:
       - '5678:5678'
@@ -32,6 +32,7 @@ services:
       - N8N_ENCRYPTION_KEY=${N8N_ENCRYPTION_KEY}
       - GENERIC_TIMEZONE=America/New_York
       - TZ=America/New_York
+      - N8N_SECURE_COOKIE=false
     depends_on:
       parallax-db:
         condition: service_healthy
