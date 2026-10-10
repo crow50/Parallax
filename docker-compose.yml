@@ -33,6 +33,9 @@ services:
       - GENERIC_TIMEZONE=America/New_York
       - TZ=America/New_York
       - N8N_SECURE_COOKIE=false
+      - N8N_RUNNERS_MODE=external
+      - N8N_RUNNERS_AUTH_TOKEN=${N8N_RUNNERS_AUTH_TOKEN}
+      - N8N_RUNNERS_BROKER_LISTEN_ADDRESS=0.0.0.0
     depends_on:
       parallax-db:
         condition: service_healthy
@@ -40,6 +43,18 @@ services:
       - parallax-net
     volumes:
       - n8n-data:/home/node/.n8n
+
+  n8n-task-runner:
+    image: ghcr.io/n8n-io/runners:stable
+    restart: unless-stopped
+    environment:
+      - N8N_RUNNERS_AUTH_TOKEN=${N8N_RUNNERS_AUTH_TOKEN}
+      - N8N_RUNNERS_TASK_BROKER_URI=http://n8n:5679
+      - N8N_NATIVE_PYTHON_RUNNER=true
+    depends_on:
+      - n8n
+    networks:
+      - parallax-net
 
 volumes:
   parallax_db_data:
